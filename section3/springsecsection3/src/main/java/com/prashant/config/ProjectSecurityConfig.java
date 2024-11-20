@@ -34,6 +34,7 @@ public class ProjectSecurityConfig {
 //        http.formLogin(flc -> flc.disable());
 //        http.httpBasic(hbc -> hbc.disable());
         return http.build();
+
     }
 
     @Bean
