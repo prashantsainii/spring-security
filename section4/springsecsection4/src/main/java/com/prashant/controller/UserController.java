@@ -23,7 +23,11 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody Customer customer) {   // Customer is a JPA entity
+    public ResponseEntity<String> registerUser(@RequestBody Customer customer) {
+        // When a client sends a POST request to the /register endpoint, the request's JSON body is deserialized into a Customer object.
+        // the incoming JSON structure matches the fields of the Customer class. Getter Setter played important role in data binding
+
+        // Customer is a JPA entity
         // in real project we never try to accept the request in form of entity classes we will always use DTO pattern
 
         try {
@@ -46,4 +50,5 @@ public class UserController {
                     .body("An exception occurred : " + e.getMessage());
         }
     }
+
 }
