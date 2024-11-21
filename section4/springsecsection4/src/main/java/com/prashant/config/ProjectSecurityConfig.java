@@ -18,9 +18,10 @@ public class ProjectSecurityConfig {
 //        http.authorizeHttpRequests((requests) -> requests.anyRequest().authenticated());  // will perform check on all the api endpoints
 //        http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll());  // will allow all the api to provide output without any check
 //        http.authorizeHttpRequests((requests) -> requests.anyRequest().denyAll());   // will throw 403 error after the authentication
-        http.authorizeHttpRequests((requests) -> requests.
+        http.csrf(csrfConfig -> csrfConfig.disable()) // spring security will enforce the csrf protection on routes which perform write operations, so we are disabling them for a while
+                .authorizeHttpRequests((requests) -> requests.
                 requestMatchers("/myAccount", "/myBalance", "/myCards", "/myLoans").authenticated()
-                .requestMatchers("/contact","/notices").permitAll());   // all requests apart from this will act like -> requests.anyRequest().denyAll()
+                .requestMatchers("/contact","/notices", "/register").permitAll());   // all requests apart from this will act like -> requests.anyRequest().denyAll()
         http.formLogin(withDefaults());  // uses UsernamePasswordAuthenticationFilter.java class's  attemptAuthentication() method
         http.httpBasic(withDefaults());  // uses BasicAuthenticationFilter.java class's  doFilterInternal() method
 //        http.formLogin(flc -> flc.disable());
