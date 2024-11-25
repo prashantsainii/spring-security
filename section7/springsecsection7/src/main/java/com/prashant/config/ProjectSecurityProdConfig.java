@@ -1,5 +1,7 @@
 package com.prashant.config;
 
+import com.prashant.exceptionhandling.CustomAccessDeniedHandler;
+import com.prashant.exceptionhandling.CustomBasicAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -26,7 +28,12 @@ public class ProjectSecurityProdConfig {
                 requestMatchers("/myAccount", "/myBalance", "/myCards", "/myLoans").authenticated()
                 .requestMatchers("/contact","/notices", "/register").permitAll());   // all requests apart from this will act like -> requests.anyRequest().denyAll()
         http.formLogin(withDefaults());  // uses UsernamePasswordAuthenticationFilter.java class's  attemptAuthentication() method
-        http.httpBasic(withDefaults());  // uses BasicAuthenticationFilter.java class's  doFilterInternal() method
+//        http.formLogin(flc -> flc.____) // no method to configure ui based authentication through CustomBasicAuthenticationEntryPoint
+        http.httpBasic(hbc -> hbc.authenticationEntryPoint((new CustomBasicAuthenticationEntryPoint())));  // we are using our custom authentication entry point
+//        http.exceptionHandling(ehc-> ehc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));  // it is global config as in case when apart from authentication spring security may throw 401 error so to handle such case we can have it
+        http.exceptionHandling(ehc-> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));  // this will be triggered at global level
+
+        // uses BasicAuthenticationFilter.java class's  doFilterInternal() method
 //        http.formLogin(flc -> flc.disable());
 //        http.httpBasic(hbc -> hbc.disable());
         return http.build();
