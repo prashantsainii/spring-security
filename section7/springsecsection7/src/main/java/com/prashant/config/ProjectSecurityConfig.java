@@ -22,11 +22,12 @@ public class ProjectSecurityConfig {
 //        http.authorizeHttpRequests((requests) -> requests.anyRequest().authenticated());  // will perform check on all the api endpoints
 //        http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll());  // will allow all the api to provide output without any check
 //        http.authorizeHttpRequests((requests) -> requests.anyRequest().denyAll());   // will throw 403 error after the authentication
-        http.requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())  // only HTTP requests will be allowed, if this configuration is not added both HTTP and HTTPS will be allowed
+        http.sessionManagement(smc->smc.invalidSessionUrl("/invalidSession").maximumSessions(3).maxSessionsPreventsLogin(true))  // will be triggered in case session times out, or tampered JSESSION ID value's + number of concurrent session's + if once logged in cannot create new session
+                .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())  // only HTTP requests will be allowed, if this configuration is not added both HTTP and HTTPS will be allowed
                 .csrf(csrfConfig -> csrfConfig.disable()) // spring security will enforce the csrf protection on routes which perform write operations, so we are disabling them for a while
                 .authorizeHttpRequests((requests) -> requests.
                 requestMatchers("/myAccount", "/myBalance", "/myCards", "/myLoans").authenticated()
-                .requestMatchers("/contact","/notices", "/register").permitAll());   // all requests apart from this will act like -> requests.anyRequest().denyAll()
+                .requestMatchers("/contact","/notices", "/register", "/error", "/invalidSession").permitAll());   // all requests apart from this will act like -> requests.anyRequest().denyAll()
         http.formLogin(withDefaults());  // uses UsernamePasswordAuthenticationFilter.java class's  attemptAuthentication() method
 //        http.formLogin(flc -> flc.____) // no method to configure ui based authentication through CustomBasicAuthenticationEntryPoint
         http.httpBasic(hbc -> hbc.authenticationEntryPoint((new CustomBasicAuthenticationEntryPoint())));  // we are using our custom authentication entry point
