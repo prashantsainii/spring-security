@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CardsController {
 
-    private final CardsRepository cardsRepository;
+    private final CardsRepository cardsRepository;  // object(class will be made by spring) will be created for this field at runtime
 
     @GetMapping("/myCards")
     public List<Cards> getCardDetails(@RequestParam long id) {
