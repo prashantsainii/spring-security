@@ -16,7 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 //SPRING_PROFILES_ACTIVE=default
 
 @SpringBootApplication
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class EazyBankBackendApplication {
 
 	public static void main(String[] args) {
