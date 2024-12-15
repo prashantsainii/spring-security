@@ -71,7 +71,7 @@ public class ProjectSecurityConfig {
 //                        .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
                         .requestMatchers("/myAccount").hasRole("USER")  // role should not be appended with ROLE_ , spring sec will take care of it
                         .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/myLoans").hasRole("USER")
+                        .requestMatchers("/myLoans").authenticated()
                         .requestMatchers("/myCards").hasRole("USER")
                         .requestMatchers("/user").authenticated()
                         .requestMatchers("/contact","/notices", "/register", "/error", "/invalidSession", "/apiLogin").permitAll());   // all requests apart from this will act like -> requests.anyRequest().denyAll()

@@ -71,7 +71,7 @@ public class ProjectSecurityProdConfig {
 //                        .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
                         .requestMatchers("/myAccount").hasRole("USER")
                         .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/myLoans").hasRole("USER")
+                        .requestMatchers("/myLoans").authenticated()
                         .requestMatchers("/myCards").hasRole("USER")
                         .requestMatchers("/user").authenticated()
                         .requestMatchers("/contact","/notices", "/register", "/invalidSession", "/error", "/apiLogin").permitAll());   // all requests apart from this will act like -> requests.anyRequest().denyAll()
